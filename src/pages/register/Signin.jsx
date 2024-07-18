@@ -1,34 +1,32 @@
-import { useContext, useState } from "react";
 import Auth from "../../Components/auth/Auth";
 import BgColor from "../../utlis/bgColor";
 import heroBg from "/bg.png";
 import { useNavigate } from "react-router-dom";
-
+import { useState } from "react";
 import apiRequest from "../../lib/apiRequest";
-import { AuthContext } from "../../Context/AuthContext";
-const Login = () => {
+
+const Signin = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { onLoginHandler } = useContext(AuthContext);
 
-  const onLogin = async (event) => {
+  const onRegisterHandler = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     setError(null);
     const formData = new FormData(event.target);
 
     const username = formData.get("username");
+    const email = formData.get("email");
     const password = formData.get("password");
 
-    const userData = { username, password };
+    const userData = { username, email, password };
     try {
-      const response = await apiRequest.post("/auth/login", userData);
-      onLoginHandler(response.data);
-      navigate("/");
+      await apiRequest.post("/auth/register", userData);
+      navigate("/login");
     } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong");
+      setError(err.response.data?.message);
     } finally {
       setIsLoading(false);
     }
@@ -41,7 +39,7 @@ const Login = () => {
           <div className="col-12 col-md-5 col-lg-5 p-0">
             <img
               src={heroBg}
-              className="d-none d-md-block mx-lg-auto img-fluid"
+              className="d-none d-lg-block mx-lg-auto img-fluid"
               alt="Hero Bg"
               width="600"
               height="400"
@@ -50,8 +48,8 @@ const Login = () => {
           </div>
           <div className="col-12 col-md-7 col-lg-7">
             <Auth
-              authMode={"login"}
-              onSubmitHandler={onLogin}
+              authMode={"register"}
+              onSubmitHandler={onRegisterHandler}
               error={error}
               isLoading={isLoading}
             />
@@ -62,4 +60,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signin;

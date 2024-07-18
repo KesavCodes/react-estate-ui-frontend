@@ -1,4 +1,4 @@
-import heroBg from "../../../public/bg.png";
+import heroBg from "/bg.png";
 
 import BgColor from "../../utlis/bgColor.jsx";
 
@@ -8,7 +8,7 @@ import Kpi from "../../Components/kpi/Kpi.jsx";
 const HomePage = () => {
   return (
     <div className="container-lg">
-      <BgColor />
+      <BgColor additionalClasses={'d-md-flex'}/>
       <div className="col-xxl-12 px-4">
         <div className="row flex-md-row-reverse align-items-center g-5 py-5">
           <div className="col-12 col-md-5 col-lg-5 p-0">

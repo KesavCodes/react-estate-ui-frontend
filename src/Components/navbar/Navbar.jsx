@@ -5,10 +5,11 @@ import styles from "./Navbar.module.css";
 
 import logo from "../../../public/logo.png";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../Context/AuthContext";
 
-import { userData } from "../../data/dummyData";
 const NavbarComponent = () => {
-  const user = userData; // Replace with actual user data or authentication logic
+  const { currentUser: user } = useContext(AuthContext);
   return (
     <Navbar
       collapseOnSelect
@@ -23,15 +24,17 @@ const NavbarComponent = () => {
           <img src={logo} height="20px"></img>LamaEstate
         </Link>
         <div className="d-flex d-md-none gap-2">
-          <div className=" d-flex align-items-center gap-2">
-            <img
-              src={userData.img}
-              alt="profile pic"
-              className="rounded-circle"
-              width={40}
-              height={40}
-            />
-          </div>
+          {user && (
+            <div className=" d-flex align-items-center gap-2">
+              <img
+                src={user.avatar}
+                alt="profile pic"
+                className="rounded-circle"
+                width={40}
+                height={40}
+              />
+            </div>
+          )}
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         </div>
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -42,25 +45,19 @@ const NavbarComponent = () => {
             <Link to="/list" className="nav-link">
               Listings
             </Link>
-            <Link to="/contact" className="nav-link">
-              Contact
-            </Link>
-            <Link to="/agents" className="nav-link">
-              Agents
-            </Link>
           </Nav>
           <Nav className="d-flex gap-2 gap-lg-4">
             {user ? (
               <div className="d-none d-md-flex align-items-center gap-4">
                 <div className=" d-flex align-items-center gap-2">
                   <img
-                    src={userData.img}
+                    src={user.avatar}
                     alt="profile pic"
                     className="rounded-circle"
                     width={40}
                     height={40}
                   />
-                  <p className="mb-0 fw-bolder">{userData.name}</p>
+                  <p className="mb-0 fw-bolder">{user.username}</p>
                 </div>
                 <Link to="/profile">
                   <button
@@ -76,10 +73,10 @@ const NavbarComponent = () => {
               </div>
             ) : (
               <>
-                <Link to="/signin" className="nav-link">
+                <Link to="/login" className="nav-link">
                   Sign in
                 </Link>
-                <Link to="/signup" className="btn btn-dark px-4">
+                <Link to="/register" className="btn btn-dark px-4">
                   Sign up
                 </Link>
               </>

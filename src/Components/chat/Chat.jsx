@@ -1,39 +1,62 @@
-import { useState } from "react";
-import { userData } from "../../data/dummyData";
+import { useContext, useState } from "react";
 import styles from "./Chat.module.css";
 import SingleChat from "./SingleChat";
-const Chat = () => {
+import { AuthContext } from "./../../Context/AuthContext";
+import apiRequest from "./../../lib/apiRequest";
+const Chat = ({ chats }) => {
+  const [chat, setChat] = useState(null);
   const [showChat, setShowChat] = useState(false);
+  const { currentUser } = useContext(AuthContext);
+
+  const [openedChats, setOpenedChats] = useState([])
+
+  const handleOpenChat = async (id, receiver) => {
+    try {
+      const res = await apiRequest.get(`/chats/${id}`);
+      res.data.receiver = receiver;
+      setChat({ ...res.data });
+      setShowChat(true);
+      openedChats.push(id)
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="rounded bg-secondary bg-opacity-10 p-3 position-relative">
-      {showChat && <SingleChat closeChatHandler={setShowChat} />}
+      {showChat && <SingleChat closeChatHandler={setShowChat} chat={chat} />}
       <h3>Messages</h3>
       <div
-        className={`overflow-y-scroll pe-2  ${styles["container-height"]} ${styles["scrollbar-style"]}`}
+        className={`overflow-y-auto pe-2  ${styles["container-height"]} ${styles["scrollbar-style"]}`}
       >
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => {
+        {chats.map((item) => {
           return (
-            <div className="d-flex gap-2 mx-1 my-2" key={item}>
+            <div className="d-flex gap-2 mx-1 my-2" key={item.id}>
               <img
-                src={userData.img}
+                src={item.receiver.avatar}
                 alt="profile pic"
                 height={30}
                 width={30}
                 className="rounded-circle"
               />
               <div
-                className="rounded bg-dark text-light w-100"
-                onClick={() => setShowChat(true)}
-                style={{ cursor: "pointer" }}
+                className={`rounded w-100 ${
+                  item.seenBy.includes(currentUser.id) || openedChats.includes(item.id)
+                    ? "bg-dark text-light"
+                    : "bg-info text-dark"
+                }`}
+                onClick={() => handleOpenChat(item.id, item.receiver)}
+                style={{
+                  cursor: "pointer",
+                }}
               >
                 <div className="d-flex justify-content-between">
-                  <p className="mx-1 my-0 p-2">{userData.name}</p>
+                  <p className="mx-1 my-0 p-2">{item.receiver.username}</p>
                   <p className="mx-1 my-0 p-2">
                     <small className="">10.30 AM</small>
                   </p>
                 </div>
-                <p className="px-3">Lorem ipsum, dolor sit ame...</p>
+                <p className="px-3">{item.lastMessage.slice(0, 25) + "..."}</p>
               </div>
             </div>
           );

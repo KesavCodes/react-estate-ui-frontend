@@ -7,7 +7,7 @@ const Pin = ({ data }) => {
       <Popup>
         <div className="d-flex gap-2 m-0 p-0">
           <img
-            src={data.img}
+            src={data.images[0]}
             alt="Pop up home image"
             className="object-fit-cover rounded"
             height={50}

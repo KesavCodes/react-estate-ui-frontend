@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Searchbar = () => {
+  const navigate = useNavigate();
   const [query, setQuery] = useState({
     mode: "buy",
-    location: "",
+    city: "",
     minPrice: 0,
     maxPrice: 0,
   });
@@ -15,9 +17,20 @@ const Searchbar = () => {
     );
 
   const inputChangeHandler = (e) => {
-    setQuery((prevState) => ({ ...prevState, [e.target.id]: e.target.value }));
+    setQuery((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
   };
 
+  const submitHandler = (e) => {
+    e.preventDefault();
+    navigate(
+      `/list?mode=${query.mode}&minPrice=${query.minPrice}&maxPrice=${
+        query.maxPrice
+      }${query.city ? `&city=${query.city}` : ""}`
+    );
+  };
   return (
     <div className="searchBar">
       <div className="type row px-3 gap-md-0 ">
@@ -38,12 +51,12 @@ const Searchbar = () => {
           Rent
         </button>
       </div>
-      <form>
+      <form onSubmit={submitHandler}>
         <div className="flex-column flex-md-row d-flex  w-100 my-3 gap-2 gap-md-1">
           <input
             type="text"
-            name="location"
-            id="location"
+            name="city"
+            id="city"
             className="form-control rounded-0"
             placeholder="City Location"
             onChange={inputChangeHandler}
@@ -73,7 +86,7 @@ const Searchbar = () => {
           />
           <button
             className="btn btn-dark rounded-0"
-            type="button"
+            type="submit"
             id="button-addon2"
           >
             <img src="../../../public/search.png" />
