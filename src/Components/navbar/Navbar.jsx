@@ -7,9 +7,16 @@ import logo from "../../../public/logo.png";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../Context/AuthContext";
+import { useNotificationStore } from "./../../lib/notificationStore";
 
 const NavbarComponent = () => {
   const { currentUser: user } = useContext(AuthContext);
+
+  const notificationCount = useNotificationStore((state) => state.count);
+  const fetchNotification = useNotificationStore((state) => state.fetch);
+
+  fetchNotification();
+  console.log(notificationCount);
   return (
     <Navbar
       collapseOnSelect
@@ -65,9 +72,14 @@ const NavbarComponent = () => {
                     className="btn btn-dark position-relative px-4"
                   >
                     Profile{" "}
-                    <span className="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2">
-                      3<span className="visually-hidden">unread messages</span>
-                    </span>
+                    {notificationCount ? (
+                      <span className="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2">
+                        {notificationCount}
+                        <span className="visually-hidden">unread messages</span>
+                      </span>
+                    ) : (
+                      <></>
+                    )}
                   </button>
                 </Link>
               </div>

@@ -3,12 +3,16 @@ import styles from "./Chat.module.css";
 import SingleChat from "./SingleChat";
 import { AuthContext } from "./../../Context/AuthContext";
 import apiRequest from "./../../lib/apiRequest";
+import { useNotificationStore } from "./../../lib/notificationStore";
 const Chat = ({ chats }) => {
   const [chat, setChat] = useState(null);
   const [showChat, setShowChat] = useState(false);
   const { currentUser } = useContext(AuthContext);
+  const decreaseNotificationCount = useNotificationStore(
+    (state) => state.decrease
+  );
 
-  const [openedChats, setOpenedChats] = useState([])
+  const [openedChats, setOpenedChats] = useState([]);
 
   const handleOpenChat = async (id, receiver) => {
     try {
@@ -16,7 +20,10 @@ const Chat = ({ chats }) => {
       res.data.receiver = receiver;
       setChat({ ...res.data });
       setShowChat(true);
-      openedChats.push(id)
+      setOpenedChats((prev) => [...prev, id]);
+      if (!openedChats.includes(id)) {
+        decreaseNotificationCount();
+      }
     } catch (err) {
       console.error(err);
     }
@@ -41,7 +48,8 @@ const Chat = ({ chats }) => {
               />
               <div
                 className={`rounded w-100 ${
-                  item.seenBy.includes(currentUser.id) || openedChats.includes(item.id)
+                  item.seenBy.includes(currentUser.id) ||
+                  openedChats.includes(item.id)
                     ? "bg-dark text-light"
                     : "bg-info text-dark"
                 }`}
