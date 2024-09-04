@@ -28,7 +28,7 @@ const NavbarComponent = () => {
           to={"/"}
           className="d-flex align-items-baseline gap-2 navbar-brand"
         >
-          <img src={logo} height="20px"></img>LamaEstate
+          <img src={logo} height="20px"></img>HorizonEstates
         </Link>
         <div className="d-flex d-md-none gap-2">
           {user && (
