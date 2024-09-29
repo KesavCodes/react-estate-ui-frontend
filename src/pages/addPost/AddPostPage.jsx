@@ -20,7 +20,6 @@ const AddPostPage = () => {
     setError(null);
     const formData = new FormData(event.target);
     const inputs = Object.fromEntries(formData);
-    console.log(inputs);
     try {
       const response = await apiRequest.post("/posts", {
         postData: {
@@ -47,9 +46,9 @@ const AddPostPage = () => {
           restaurant: parseInt(inputs.restaurant),
         },
       });
-      navigate(`/list/${response.data?.postData.id}`);
+      navigate(`/list/${response?.data?.postData.id}`);
     } catch (err) {
-      setError(err.response.data?.message);
+      setError(err.response?.data?.message);
     }
   };
   return (

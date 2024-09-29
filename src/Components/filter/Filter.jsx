@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 const Filter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState({
@@ -22,7 +22,6 @@ const Filter = () => {
     setSearchParams(query);
   };
 
-  // const {  } = useNavigation()
   return (
     <div>
       <h1 className="fs-3 fw-normal">
