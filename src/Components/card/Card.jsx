@@ -55,18 +55,6 @@ const Card = ({ details }) => {
                   </small>
                 </div>
               </div>
-              <div className="icons d-flex gap-3">
-                <div
-                  className={`feature d-flex align-items-center gap-1  ${styles.pointer}`}
-                >
-                  <img src="./save.png" height={18} alt="save logo" />
-                </div>
-                <div
-                  className={`feature d-flex align-items-center gap-1  ${styles.pointer}`}
-                >
-                  <img src="./chat.png" height={18} alt="chat logo" />
-                </div>
-              </div>
             </div>
           </div>
         </div>

@@ -12,11 +12,10 @@ import { useNotificationStore } from "./../../lib/notificationStore";
 const NavbarComponent = () => {
   const { currentUser: user } = useContext(AuthContext);
 
+
   const notificationCount = useNotificationStore((state) => state.count);
   const fetchNotification = useNotificationStore((state) => state.fetch);
-
-  fetchNotification();
-  console.log(notificationCount);
+  if(user) fetchNotification();
   return (
     <Navbar
       collapseOnSelect

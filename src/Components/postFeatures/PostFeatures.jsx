@@ -71,6 +71,19 @@ const PostFeatures = ({ postData }) => {
     },
   ];
 
+  const messageHandler = async () => {
+    if(postData.user.id===currentUser.id) return;
+    try{
+      await apiRequest.post("/chats",{
+        receiverId: postData.user.id
+      })
+      navigate("/profile")
+    }catch(err){
+      console.log(err)
+      if(err.response.status===400) navigate("/profile");
+    }
+  }
+
   const handleSave = async () => {
     if (!currentUser) {
       navigate("/login");
@@ -140,6 +153,7 @@ const PostFeatures = ({ postData }) => {
         <div
           className="bg-secondary bg-opacity-10 rounded border py-2 px-3 m-0 d-flex gap-2 align-items-center"
           style={{ cursor: "pointer" }}
+          onClick={messageHandler}
         >
           <img src="/chat.png" alt="chat logo" height={20} />
           Send a Message

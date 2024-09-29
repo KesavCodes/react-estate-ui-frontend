@@ -64,7 +64,12 @@ const Chat = ({ chats }) => {
                     <small className="">10.30 AM</small>
                   </p>
                 </div>
-                <p className="px-3">{item.lastMessage.slice(0, 25) + "..."}</p>
+                <p className="px-3">
+                  {item.lastMessage
+                    ? item.lastMessage.slice(0, 25) +
+                      (item.lastMessage.length > 25 ? "..." : "")
+                    : "Start a chat"}
+                </p>
               </div>
             </div>
           );

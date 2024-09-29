@@ -5,7 +5,7 @@ const Filter = () => {
   const [query, setQuery] = useState({
     city: searchParams.get("city") || "",
     type: searchParams.get("type") || "",
-    property: searchParams.get("property") || "",
+    property: searchParams.get("property") || "any",
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
     bedroom: searchParams.get("bedroom") || "",
@@ -74,9 +74,7 @@ const Filter = () => {
             onChange={handleChange}
             value={query.property}
           >
-            <option value="any" selected>
-              Any
-            </option>
+            <option value="any">Any</option>
             <option value="apartment">Apartment</option>
             <option value="house">House</option>
             <option value="condo">Condo</option>
