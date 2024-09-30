@@ -12,9 +12,9 @@ import { useNotificationStore } from "./../../lib/notificationStore";
 const NavbarComponent = () => {
   const { currentUser: user } = useContext(AuthContext);
 
-
   const notificationCount = useNotificationStore((state) => state.count);
   const fetchNotification = useNotificationStore((state) => state.fetch);
+
   if(user) fetchNotification();
   return (
     <Navbar
